@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Publishers</title>
+</head>
+<body>
+<p><a href="{% url 'books_and_folks:index' %}">Go to Homepage</a></p>
+<h1>Publishers list:</h1>
+{% if pubs_books_and_stuff %}
+{% for publisher in pubs_books_and_stuff %}
+      <li>
+        <a href="{% url 'books_and_folks:publisher' publisher.pk %}">{{ publisher.name }}</a>;
+          Books published: {{ publisher.books_pubs__count }};
+          Book average rating: {{ publisher.books_pubs__rating__avg }}
+      </li>
+{% endfor %}
+{% else %}
+<p>Sorry, information unavailable.</p>
+{% endif %}
+</body>
+</html>

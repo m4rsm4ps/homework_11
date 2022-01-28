@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Book Detail</title>
+</head>
+<body>
+{% if book %}
+<h1>{{ book.name }}</h1>
+<p> This title was written by
+    {% for author in book.authors.all %}
+       <a href="{% url 'books_and_folks:author' author.pk %}">{{ author.name }}</a> ({{ author.age }} years),&nbsp;
+    {%endfor%}
+<hr>
+You can purchase this book at:
+  {% for store in book.stores_books.all %}
+    <a href="{% url 'books_and_folks:store' store.pk %}">{{ store.name }}</a>
+  {% endfor %}
+<hr>
+<p>Pages: {{ book.pages }}</p>
+<p>Rating: {{ book.rating }} / 5.0</p>
+<p>Price: {{ book.price }}</p>
+<p>Published by: <a href="{% url 'books_and_folks:publisher' book.publisher.pk %}">{{ book.publisher }}</a></p>
+<hr>
+<a href="{% url 'books_and_folks:books' %}">Go to book list</a>
+{% else %}
+<a href="{% url 'books_and_folks:books' %}">Go to book list</a>
+{% endif %}
+</body>
+</html>

@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Publisher</title>
+</head>
+<body>
+{% if pubbie %}
+<h1> Here we have {{ pubbie.name }} !</h1>
+<hr>
+<p>They've already published {{ pubbie.books_pubs__count }} books:</p>
+  {% for book in pubbie.books_pubs.all %}
+    <li>
+        <a href="{% url 'books_and_folks:book' book.pk %}">{{ book.name }}</a> by
+        {% for author in book.authors.all %}
+          <a href="{% url 'books_and_folks:author' author.pk %}">{{ author.name }}, </a>
+        {% endfor %}
+        ( Book rating = {{ book.rating }} )
+    </li>
+  {%endfor%}
+<hr>
+<a href="{% url 'books_and_folks:publishers' %}">Go to publishers list</a>
+{% else %}
+<a href="{% url 'books_and_folks:publishers' %}">Go to publishers list</a>
+{% endif %}
+</body>
+</html>

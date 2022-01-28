@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Stores</title>
+</head>
+<body>
+<p><a href="{% url 'books_and_folks:index' %}">Go to Homepage</a></p>
+<h1>Buy your books in multiple online bookstores:</h1>
+{% if stores_books %}
+{% for store in stores_books %}
+      <li>
+        <a href="{% url 'books_and_folks:store' store.pk %}">{{ store.name }}</a>
+          (Available {{ store.books__count }} books, average price = {{store.books__price__avg}} )
+      </li>
+{% endfor %}
+{% else %}
+<p>Sorry, no info on stores yet.</p>
+{% endif %}
+</body>
+</html>

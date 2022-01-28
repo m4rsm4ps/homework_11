@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Store</title>
+</head>
+<body>
+    {% if store %}
+<h1>Welcome to {{ store.name }}</h1>
+<hr>
+<p> Here available {{ store.books__count }} following titles:
+    {% for book in store.books.all %}
+       <li>
+           <a href="{% url 'books_and_folks:book' book.pk %}">{{ book.name }}</a> by
+        {% for author in book.authors.all %} {{ author.name }} {% endfor %} ($ {{ book.price }})
+       </li>
+    {%endfor%}
+<hr>
+<a href="{% url 'books_and_folks:stores' %}">Go to stores list</a>
+{% else %}
+<a href="{% url 'books_and_folks:stores' %}">Go to stores list</a>
+{% endif %}
+</body>
+</html>

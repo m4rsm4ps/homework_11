@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Authors</title>
+</head>
+<body>
+<p><a href="{% url 'books_and_folks:index' %}">Go to Homepage</a></p>
+<h1>Authors list:</h1>
+{% if authors_and_books_amt %}
+{% for author in authors_and_books_amt %}
+      <li>
+        <a href="{% url 'books_and_folks:author' author.pk %}">{{ author.name }}</a>
+          ( Wrote {{ author.books_auths__count}} books!)
+      </li>
+{% endfor %}
+{% else %}
+<p>No authors available for browsing, sorry.</p>
+{% endif %}
+</body>
+</html>

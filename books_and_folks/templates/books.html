@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Books</title>
+</head>
+<body>
+<p><a href="{% url 'books_and_folks:index' %}">Go to Homepage</a></p>
+<h1>Book list:</h1>
+{% if books_and_authors %}
+{% for book in books_and_authors %}
+      <li>
+        <a href="{% url 'books_and_folks:book' book.pk %}">{{ book.name }}</a>  ( by
+          {% for author in book.authors.all %}
+            {{ author.name }}
+          {% endfor %}
+          )
+      </li>
+{% endfor %}
+{% else %}
+<p>Sorry, no books available.</p>
+{% endif %}
+</body>
+</html>
