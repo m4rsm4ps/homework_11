@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<p><a href="{% url 'books_and_folks:index' %}">Go to Homepage</a></p>
+<h1>Authors list:</h1>
+{% if user.is_authenticated %}
+<p><a href="{% url 'books_and_folks:author-create'%}">Add another author</a> </p>
+{% endif %}
+{% if author_list %}
+{% for author in author_list %}
+      <li>
+        <a href="{% url 'books_and_folks:author' author.pk %}">{{ author.name }}</a>
+          ( Wrote {{ author.books_auths__count}} books!)
+      </li>
+{% endfor %}
+{% else %}
+<p>No authors available for browsing, sorry.</p>
+{% endif %}
+<br>
+{% if is_paginated %}
+                  <span class="page-links">
+                      {% if page_obj.has_previous %}
+                          <a href="{{ request.path }}?page={{ page_obj.previous_page_number }}">previous</a>
+                      {% endif %}
+                      <span class="page-current">
+                          Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+                      </span>
+                      {% if page_obj.has_next %}
+                          <a href="{{ request.path }}?page={{ page_obj.next_page_number }}">next</a>
+                      {% endif %}
+                  </span>
+          {% endif %}
+</body>
+</html>

@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Author Detail</title>
+</head>
+<body>
+{% if author %}
+<h1> Behold: {{ author.name }} !</h1>
+{% if user.is_authenticated %}
+<p><a href="{% url 'books_and_folks:author-delete' author.pk %}">Delete this author</a></p>
+{% endif %}
+<hr>
+<p>This author wrote {{ author.books_auths__count }} books:</p>
+  {% for book in author.books_auths.all %}
+    <p><a href="{% url 'books_and_folks:book' book.pk %}">{{ book.name }}</a> ( {{ book.pages }} pages )</p>
+  {% endfor %}
+<hr>
+<a href="{% url 'books_and_folks:authors' %}">Go to authors list</a>
+{% else %}
+<a href="{% url 'books_and_folks:books' %}">Go to authors list</a>
+{% endif %}
+</body>
+</html>

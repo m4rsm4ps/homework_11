@@ -1,5 +1,10 @@
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Avg, Count
 from django.shortcuts import get_object_or_404, render
+from django.urls import reverse_lazy
+from django.views import generic
+from django.views.generic.edit import DeleteView, CreateView, UpdateView
+
 
 from .models import Author, Book, Publisher, Store
 
@@ -23,19 +28,19 @@ def book_detail(request, pk):
     return render(request, 'bookdetail.html', {'book': book})
 
 
-def authors_list(request):
-    authors_and_books_amt = Author.objects.all().annotate(Count('books_auths'))
+class AuthorList(generic.ListView):
+    model = Author
+    paginate_by = 4
+    queryset = Author.objects.all().annotate(Count('books_auths'))
+#
+# def authors_list(request):
+#     authors_and_books_amt = Author.objects.all().annotate(Count('books_auths'))
+#
+#     return render(request, 'authors.html', {'authors_and_books_amt': authors_and_books_amt})
 
-    return render(request, 'authors.html', {'authors_and_books_amt': authors_and_books_amt})
 
-
-def author_detail(request, pk):
-    author = get_object_or_404(
-        Author.objects.prefetch_related('books_auths').all().annotate(Count('books_auths')),
-        pk=pk,
-    )
-
-    return render(request, 'authordetail.html', {'author': author})
+class AuthorDetail(generic.DetailView):
+    model = Author
 
 
 def publishers_list(request):
@@ -66,3 +71,20 @@ def store_detail(request, pk):
     )
 
     return render(request, 'storedetail.html', {'store': store})
+
+
+class AuthorCreate(LoginRequiredMixin, CreateView):
+    model = Author
+    fields = '__all__'
+    success_url = reverse_lazy('books_and_folks:authors')
+
+
+class AuthorUpdate(LoginRequiredMixin, UpdateView):
+    model = Author
+    fields = '__all__'
+    success_url = reverse_lazy('books_and_folks:authors')
+
+
+class AuthorDelete(LoginRequiredMixin, DeleteView):
+    model = Author
+    success_url = reverse_lazy('books_and_folks:authors')
